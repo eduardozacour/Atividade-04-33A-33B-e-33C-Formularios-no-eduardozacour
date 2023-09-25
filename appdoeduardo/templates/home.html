@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Eduardo Vasques Zacour</title>
+  {% load static %}
+  <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+  <h1>Linux em computadores com Apple Silicon</h1>
+  <p style="text-align: justify;">
+    Em seus novos computadores, a <i>Apple</i> abandonou o uso dos processadores x86 da Intel e passou a adotar seus
+    próprios processadores, desenvolvidos in-house, que utilizam a arquitetura <b>ARM</b>. Essas máquinas têm se provado
+    <u>extremamente eficientes em termos de uso de energia, mantendo altos níveis de performance.</u>
+    Infelizmente, essas inovações vêm com uma limitação: A necessidade de utilização do sistema operacional proprietário
+    da Apple. Felizmente, um grupo de desenvolvedores está desenvolvendo um projeto, chamado <a
+      href="https://asahilinux.org/" target="_blank">Asahi Linux</a>, que é uma distribuição feita para rodar em
+    computadores Apple Silicon, e o esforço já está rendendo frutos, tendo várias funcionalidades já sido puxadas
+    upstream para o kernel oficial do Linux. Nessa página você poderá acompanhar os mais recentes desenvolvimentos do
+    projeto e outras notícias relacionadas.
+  </p>
+
+  <div><img src="https://asahilinux.org/img/asahilinux_laptop.svg?763d4e1d" width="300"></div>
+  <h2>As seguintes máquinas estão disponíveis com processadores Apple Silicon:</h2>
+  <a href="/machines">Adicionar nova máquina</a>
+<ol>
+  {% for machine in machines %}
+    <li>{{ machine.name }} - <b><a href="/machines/update/{{machine.id}}">Editar</a></b> - <b><a href="/machines/delete/{{machine.id}}">Deletar</a></b></li>
+  {% endfor %}
+  </ol>
+
+  <h2>As seguintes Distribuições estão sendo desenvolvidas para o Apple Silicon:</h2>
+  <a href="/distros">Adicionar nova Distribuição</a>
+  <ul>
+     {% for distro in distros %}
+    <li>{{ distro.name }} - <b><a href="/distros/update/{{distro.id}}">Editar</a></b> - <b><a href="/distros/delete/{{distro.id}}">Deletar</a></b></li>
+  {% endfor %}
+  </ul>
+
+  <h2>Estado de desenvolvimento das funcionalidades:</h2>
+<a href="/features">Adicionar nova funcionalidade</a>
+
+  
+  <table role="table">
+  <thead>
+    <tr>
+ 
+      <th align="center">Funcionalidade</th>
+      <th align="center">Disponivel</th>
+    </tr>
+  </thead>
+  <tbody>
+    
+      {% for feature in features%}
+    <tr>
+      <td>{{feature.name}}</td>
+      <td align="center">{{feature.status}}</td>
+      <td align="center"><a href="/features/update/{{feature.id}}">Editar</a></td>
+      <td align="center"><b><a href="/features/delete/{{feature.id}}">Deletar</a></b></td>
+      </tr>
+      {% endfor %}
+    
+  </tbody>
+</table>
+
+
+  
+
+
+  <!--
+  This script places a badge on your repl's full-browser view back to your repl's cover
+  page. Try various colors for the theme: dark, light, red, orange, yellow, lime, green,
+  teal, blue, blurple, magenta, pink!
+  -->
+  
+</body>
+
+</html>

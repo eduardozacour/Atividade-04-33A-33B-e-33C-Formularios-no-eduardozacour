@@ -1,0 +1,43 @@
+html {
+  height: 100%;
+  width: 100%;
+}
+body {
+  font-family: Arial, sans-serif; 
+  line-height: 1.5; 
+  margin: 20px auto;
+  max-width: 1200px; 
+  background-color: #f7f7f7; 
+  color: #333; 
+  padding: 20px;
+}
+
+h1, h2 {
+  color: #0077CC;
+}
+
+a {
+  color: #FF4500; 
+  text-decoration: none; 
+  transition: color 0.3s; 
+}
+
+a:hover {
+  color: #FF6347; 
+}
+
+table {
+  border-collapse: collapse; 
+  width: 100%; 
+}
+
+table, th, td {
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+}
+
+th {
+  background-color: #f0f0f0; 
+}
+
+

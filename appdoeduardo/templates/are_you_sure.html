@@ -1,0 +1,19 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <p>Você tem certeza que deseja remover a {{type}}: <b>{{item}}</b></p>
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" name="confirm" value="Sim">
+        <input type="submit" value="Não">
+    </form>
+</body>
+
+</html>
