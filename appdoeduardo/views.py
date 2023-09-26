@@ -1,9 +1,15 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Machines, Features, Distros
-from .forms import DistrosForm, MachinesForm, FeaturesForm
+from .forms import DistrosForm, MachinesForm, FeaturesForm, CreateUserForm
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth.forms import AuthenticationForm
 
 
 # Create your views here.
+@login_required
 def home(request):
     machines = Machines.objects.all()
     features = Features.objects.all()
@@ -26,6 +32,7 @@ def home(request):
         })
 
 
+@login_required
 def create_machine(request):
     if request.method == 'POST':
         form = MachinesForm(request.POST)
@@ -41,6 +48,7 @@ def create_machine(request):
     })
 
 
+@login_required
 def update_machine(request, id):
     machine = Machines.objects.get(id=id)
     if request.method == 'POST':
@@ -58,6 +66,7 @@ def update_machine(request, id):
     })
 
 
+@login_required
 def create_feature(request):
     if request.method == 'POST':
         form = FeaturesForm(request.POST)
@@ -73,6 +82,7 @@ def create_feature(request):
     })
 
 
+@login_required
 def update_feature(request, id):
     feature = Features.objects.get(id=id)
     if request.method == 'POST':
@@ -90,6 +100,7 @@ def update_feature(request, id):
     })
 
 
+@login_required
 def create_distro(request):
     if request.method == 'POST':
         form = DistrosForm(request.POST)
@@ -105,6 +116,7 @@ def create_distro(request):
     })
 
 
+@login_required
 def update_distro(request, id):
     distro = Distros.objects.get(id=id)
     if request.method == 'POST':
@@ -122,6 +134,7 @@ def update_distro(request, id):
     })
 
 
+@login_required
 def delete_machine(request, id):
     machine = Machines.objects.get(id=id)
     if request.method == "POST":
@@ -137,6 +150,7 @@ def delete_machine(request, id):
                   })
 
 
+@login_required
 def delete_distro(request, id):
     distro = Distros.objects.get(id=id)
     if request.method == "POST":
@@ -152,6 +166,7 @@ def delete_distro(request, id):
                   })
 
 
+@login_required
 def delete_feature(request, id):
     feature = Features.objects.get(id=id)
     if request.method == "POST":
@@ -165,3 +180,71 @@ def delete_feature(request, id):
                       "type": "Funcionalidade",
                       "item": feature.name
                   })
+
+
+def create_user(request):
+    if request.method == "POST":
+        form = CreateUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Usuário criado com sucesso!')
+            return redirect('/listusers')
+    else:
+        form = CreateUserForm()
+    return render(request, 'register.html', {
+        'form': form,
+        'action': 'Adicionar'
+    })
+
+
+def login_user(request):
+    if request.method == "POST":
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            login(request, form.get_user())
+            messages.success(request, 'Login bem sucedido!')
+            return redirect('home')
+        else:
+            messages.error(request, 'Credenciais Inválidas')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'login.html', {'form': form})
+
+
+@login_required
+def logout_user(request):
+    logout(request)
+    return redirect("login")
+
+
+@login_required
+def list_users(request):
+    users = User.objects.all()
+    return render(request, 'user_list.html', {'users': users})
+
+
+@login_required
+def update_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if request.method == "POST":
+        form = CreateUserForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Usuário atualizado com sucesso!')
+            return redirect('/listusers')
+    else:
+        form = CreateUserForm(instance=user)
+    return render(request, 'update.html', {'form': form, 'action': 'Update'})
+
+
+@login_required
+def delete_user(request, user_id):
+    user = get_object_or_404(User, id=user_id)
+    if request.method == "POST":
+        user.delete()
+        messages.success(request, 'Usuário deletado com sucesso!')
+        return redirect('/listusers')
+    return render(request, 'are_you_sure.html', {
+        'item': user,
+        'type': 'Usuário'
+    })

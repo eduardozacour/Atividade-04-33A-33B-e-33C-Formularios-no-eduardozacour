@@ -10,6 +10,12 @@
 </head>
 
 <body>
+    {% if request.user.is_authenticated %}
+    <b>Bem-vindo, {{request.user.username}}</b> <br> 
+    <a href="/users/logout">Sair</a>
+  <br>
+  <a href="/listusers">Lista de Usuários</a>
+  {% endif %}
   <h1>Linux em computadores com Apple Silicon</h1>
   <p style="text-align: justify;">
     Em seus novos computadores, a <i>Apple</i> abandonou o uso dos processadores x86 da Intel e passou a adotar seus
